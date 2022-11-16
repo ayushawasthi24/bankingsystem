@@ -9,15 +9,12 @@ public:
     string name;
     string ID;
     string PWD;
-    double balance=0;
-    User(string s1, string s2, string s3){
-        ID = s1;
-        PWD = s2;
-    }
+    double balance;
 };
 
-vector<User> users;
-
+vector<User> uservector;
+User *users = new User[10];
+int noofusers=0;
 void home(User s) {
     cout << "Choice List" << endl;
     cout << "1. Deposit Money" << endl << "2. Withdraw Money" << endl << "3. Balance Enquiry" << endl << "4. Transfer Money" << endl << "5. Logout" << endl;;
@@ -55,12 +52,13 @@ void home(User s) {
             cin >> amt;
             cout << "Enter the user id of the account you want to transfer the money to" << endl;
             cin >> d;
-            for(auto i : users) {
+            for(auto i : uservector) {
                 if(i.ID == d){
                     found = 1;
                     i.balance += amt;
                     s.balance -= amt;
                     cout << "Amount transferred successfully" << endl;
+                    break;
                 }
                 else 
                     continue;
@@ -85,7 +83,7 @@ void login() {
     string id;
     cin >> id;
     int found = 0;
-    for(auto i : users){
+    for(auto i : uservector){
         if(i.ID == id){
             found =1;
             cout << "Enter password" << endl;
@@ -97,7 +95,7 @@ void login() {
             } else {
                 cout << "The password is incorrect" << endl;
                 return;
-            }
+            }   
         }
         else {
             continue;
@@ -108,6 +106,7 @@ void login() {
     }
 }
 void newuser() {
+    noofusers++;
     cout << "Enter a new user ID and password respectively" << endl;
     string id;
     string pwd;
@@ -115,8 +114,10 @@ void newuser() {
     string n;
     cout << "Enter your name" << endl;
     cin >> n;
-    User user1 = User(id, pwd, n);
-    users.push_back(user1);
+    users[noofusers].ID = id;
+    users[noofusers].PWD = pwd;
+    users[noofusers].name = n;
+    uservector.push_back(users[noofusers]);
     cout << "You have been registered successfully" << endl;
     welcome();
 }
